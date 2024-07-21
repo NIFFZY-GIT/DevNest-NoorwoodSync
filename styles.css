@@ -114,7 +114,7 @@ img .logo{
     color:#333;
 }
 
-.content .textBox a{
+.btnshop{
     display: inline-block;
     margin-top: 20px;
     padding: 10px 20px;
@@ -125,7 +125,10 @@ img .logo{
     letter-spacing: 1px;
     text-decoration: none;
 }
-
+.btnshop:hover{
+    background: #01834d;
+    color: beige;
+}
 .content .imgBox{
     width: 600px;
     display: flex;
