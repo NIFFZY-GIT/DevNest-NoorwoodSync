@@ -1,35 +1,33 @@
 <?php
 require 'config.php';
-if(isset($_POST["regBtn"]))
+if(isset($_POST["loginBtn"]))
 {
-    $fname=$_POST["fname"];
-    $lname=$_POST["lname"];
-    $email=$_POST["email"];
-    $password=$_POST["password"];
-    $confirmpassword=$_POST["confirmpassword"];
-    $duplicate="SELECT * FROM tbl_user WHERE email='$email'";
-    $result=$conn->query($duplicate);
-
-    if($result->num_rows>0)
+    $email=$_POST['email'];
+    $password=$_POST['password'];
+    $result=mysqli_query($conn,"SELECT * FROM tbl_user WHERE email='$email'");
+    $row=mysqli_fetch_assoc($result);
+    if(mysqli_num_rows($result)> 0)
     {
-        echo '<script> alert("Email has been already registered") </script>';
-    }
-    else
-    {
-        if($password == $confirmpassword)
+        if($password == $row['password'])
         {
-            $query="INSERT INTO tbl_user  VALUES('','$fname','$lname','$email','$password')";
-            mysqli_query($conn,$query);
-            echo '<script> alert("Registration Successful") </script>';
-            header("Location: login.html");
+            $_SESSION["login"]=true;
+            $_SESSION["userId"]=$row["userId"];
+            header("Location: customerindex.html");
+            echo '<script> alert("Successfully logged in") </script>';
         }
         else
         {
-            echo '<script> alert("Password does not match") </script>';
+            echo '<script> alert("Check the password again") </script>';
         }
     }
+    else
+    {
+        echo '<script> alert("User not registered") </script>';
+    }
 }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -143,32 +141,20 @@ if(isset($_POST["regBtn"]))
         </header>
 
         <div class="login-container">
-            <form action="register.php" method="post">
-                <h1>Register</h1>
-                <div class="form-group">
-                    <input type="text" name="fname" class="form-control" placeholder="First name" required>
-                    <i class="fa-solid fa-user" style="color: #ffff;"></i>
-                </div>
-                <div class="form-group">
-                    <input type="text" name="lname" class="form-control" placeholder="Last name" required>
-                    <i class="fa-solid fa-user" style="color: #ffff;"></i>
-                </div>
+            <form action="login.php" method="post">
+                <h1>Login</h1>
                 <div class="form-group">
                     <input type="email" name="email" class="form-control" placeholder="Email" required>
-                    <i class="fa-solid fa-envelope" style="color: #ffff;"></i>
+                    <i class="fa-solid fa-user" style="color: #ffff;"></i>
                 </div>
                 <div class="form-group">
                     <input type="password" name="password" class="form-control" placeholder="Password" required>
                     <i class="fa-solid fa-lock" style="color: #ffff;"></i>
                 </div>
-                <div class="form-group">
-                    <input type="password" name="confirmpassword" class="form-control" placeholder="Confirm Password" required>
-                    <i class="fa-solid fa-lock" style="color: #ffff;"></i>
-                </div>
-                <button class="btn" name="regBtn">Register</button>
+                <button class="btn" name="loginBtn">Login</button>
                 <div class="signup">
-                    <p>Already have an account?
-                    <a href="login.php">Login</a></p>
+                    <p>Don't have an account?
+                    <a href="register.html">Register</a></p>
                 </div>
             </form>
         </div>
