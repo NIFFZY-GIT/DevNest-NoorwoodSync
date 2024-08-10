@@ -7,25 +7,25 @@ if(isset($_POST["regBtn"]))
     $email=$_POST["email"];
     $password=$_POST["password"];
     $confirmpassword=$_POST["confirmpassword"];
-    $duplicate=mysqli_query($conn,"SELECT COUNT(*) FROM tbl_user WHERE username='$email' OR email='$email'");
+    $duplicate="SELECT * FROM tbl_user WHERE email='$email'";
+    $result=$conn->query($duplicate);
 
-    if($duplicate>0)
+    if($result->num_rows>0)
     {
-        echo "<script> alert('Username or email has been already registered') 
-<script>";
+        echo '<script> alert("Email has been already registered") </script>';
     }
     else
     {
         if($password == $confirmpassword)
         {
-            $query="INSERT INTO tbl_user  VALUES('','$fname','$lname','$email',
-'$password')";
+            $query="INSERT INTO tbl_user  VALUES('','$fname','$lname','$email','$password')";
             mysqli_query($conn,$query);
-            echo "<script> alert('Registration Successful') <script>";
+            echo '<script> alert("Registration Successful") </script>';
+            header("Location: login.html");
         }
         else
         {
-            echo "<script> alert('Password does not match') <script>";
+            echo '<script> alert("Password does not match") </script>';
         }
     }
 }
