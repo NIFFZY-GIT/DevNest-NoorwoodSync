@@ -1,3 +1,33 @@
+<?php
+require 'config.php';
+if(isset($_POST["loginBtn"]))
+{
+    $email=$_POST['email'];
+    $password=$_POST['password'];
+    $result=mysqli_query($conn,"SELECT * FROM tbl_user WHERE email='$email'");
+    $row=mysqli_fetch_assoc($result);
+    if(mysqli_num_rows($result)> 0)
+    {
+        if($password == $row['password'])
+        {
+            $_SESSION["login"]=true;
+            $_SESSION["userId"]=$row["userId"];
+            header("Location: customer-index.html");
+            echo '<script> alert("Successfully logged in") </script>';
+        }
+        else
+        {
+            echo '<script> alert("Check the password again") </script>';
+        }
+    }
+    else
+    {
+        echo '<script> alert("User not registered") </script>';
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,28 +141,20 @@
         </header>
 
         <div class="login-container">
-            <form action="">
-                <h1>Register</h1>
+            <form action="login.php" method="post">
+                <h1>Login</h1>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="First name" required>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required>
                     <i class="fa-solid fa-user" style="color: #ffff;"></i>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Last name" required>
-                    <i class="fa-solid fa-user" style="color: #ffff;"></i>
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Email" required>
-                    <i class="fa-solid fa-envelope" style="color: #ffff;"></i>
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" required>
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
                     <i class="fa-solid fa-lock" style="color: #ffff;"></i>
                 </div>
-                <button class="btn">Register</button>
+                <button class="btn" name="loginBtn">Login</button>
                 <div class="signup">
-                    <p>Already have an account?
-                    <a href="login.html">Login</a></p>
+                    <p>Don't have an account?
+                    <a href="register.php">Register</a></p>
                 </div>
             </form>
         </div>
