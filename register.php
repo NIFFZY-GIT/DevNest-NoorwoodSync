@@ -168,7 +168,7 @@ if(isset($_POST["regBtn"]))
                 <button class="btn" name="regBtn">Register</button>
                 <div class="signup">
                     <p>Already have an account?
-                    <a href="login.php">Login</a></p>
+                    <a href="login.html">Login</a></p>
                 </div>
             </form>
         </div>
