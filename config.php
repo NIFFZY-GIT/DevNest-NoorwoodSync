@@ -1,4 +1,4 @@
 <?php
 session_start();
-$conn=mysqli_connect("localhost","root","","dulen");
+$conn=mysqli_connect("localhost","root","","noorwoodsync");
 ?>
