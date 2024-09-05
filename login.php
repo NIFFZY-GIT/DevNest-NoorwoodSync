@@ -1,32 +1,36 @@
 <?php
+session_start();
 require 'config.php';
-if(isset($_POST["loginBtn"]))
-{
-    $email=$_POST['email'];
-    $password=$_POST['password'];
-    $result=mysqli_query($conn,"SELECT * FROM tbl_user WHERE email='$email'");
-    $row=mysqli_fetch_assoc($result);
-    if(mysqli_num_rows($result)> 0)
-    {
-        if($password == $row['password'])
-        {
-            $_SESSION["login"]=true;
-            $_SESSION["userId"]=$row["userId"];
-            header("Location: customer-index.html");
+
+if(isset($_POST["loginBtn"])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $result = mysqli_query($conn, "SELECT * FROM tbl_user WHERE email='$email'");
+    $row = mysqli_fetch_assoc($result);
+
+    if(mysqli_num_rows($result) > 0) {
+        if($password == $row['password']) {
+            $_SESSION["login"] = true;
+            $_SESSION["userId"] = $row["userId"];
+            $_SESSION["userType"] = $row["userType"];
+
+            // Redirect user based on user type
+            if ($row['userType'] == 'admin') {
+                header("Location: admin-index.html");
+            } else {
+                header("Location: customer-index.html");
+            }
             echo '<script> alert("Successfully logged in") </script>';
-        }
-        else
-        {
+        } else {
             echo '<script> alert("Check the password again") </script>';
         }
-    }
-    else
-    {
+    } else {
         echo '<script> alert("User not registered") </script>';
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
