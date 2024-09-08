@@ -18,7 +18,7 @@ if(isset($_POST["regBtn"]))
     {
         if($password == $confirmpassword)
         {
-            $query="INSERT INTO tbl_user  VALUES('','$fname','$lname','$email','$password')";
+            $query="INSERT INTO tbl_user  VALUES('','$fname','$lname','$email','$password','')";
             mysqli_query($conn,$query);
             echo '<script> alert("Registration Successful") </script>';
             header("Location: login.php");
