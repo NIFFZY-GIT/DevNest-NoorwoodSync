@@ -15,7 +15,11 @@ section{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: beige
+    background: beige;
+}
+
+body{
+    background-color: beige;
 }
 
 header{
@@ -27,13 +31,13 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
- 
+    background: beige;
 }
 
 header .hi{
     display: flex;
     position: relative;
-/* background-color: #d4af37; */
+    background: beige;
 border-radius: 100%;
 
     align-content: center;
@@ -90,6 +94,7 @@ img .logo{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: beige;
 }
 
 .content .textBox{
@@ -159,3 +164,4 @@ footer .social a{
    font-size: 40px;
    padding: 10px;
 }
+

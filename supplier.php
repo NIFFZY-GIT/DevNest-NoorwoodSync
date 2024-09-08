@@ -1,5 +1,4 @@
 <?php
-session_start();
 require 'config.php';
 
 // Check if user is logged in
@@ -19,6 +18,7 @@ if (isset($_POST['addSupplier'])) {
 
     $query = "INSERT INTO tbl_supplier (supplierId, name, email, quantity, contactNumber, location, productId) VALUES ('$supplierId', '$name', '$email', '$quantity', '$contactNumber', '$location', '$productId')";
     mysqli_query($conn, $query);
+    echo '<script> alert("Supplier added successfully")</script>';
     header("Location: supplier.php");
 }
 
@@ -57,63 +57,83 @@ if (isset($_POST['searchSupplier'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/supplier.css">
+    <link rel="icon" type="/image/png" href="images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Supplier Management</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
+        
         .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 800px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #C2B280;
         }
+
+        .container h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
         }
         .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 5px;
+            box-sizing: border-box;
+            background-color: #F5F5DC;
+            color: #333;
+        }
+        .form-group input:focus {
+            border-color: #017143;
+            outline: none;
         }
         .form-group button {
-            padding: 10px 15px;
+            padding: 12px 20px;
             background: #017143;
             color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
         }
         .form-group button:hover {
             background: #014f2a;
         }
-        .supplier {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .supplier-actions {
-            margin-top: 10px;
-        }
-        .supplier-actions button {
-            margin-right: 5px;
-        }
+
         .search-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-top: 30px;
+            padding: 15px;
+            background: #F5F5DC;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .search-container h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .search-container .form-group {
+            margin-bottom: 10px;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -123,39 +143,71 @@ if (isset($_POST['searchSupplier'])) {
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0,0,0,0.5);
             padding-top: 60px;
         }
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
+            max-width: 600px;
         }
         .close {
             color: #aaa;
             float: right;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
+            cursor: pointer;
         }
         .close:hover,
         .close:focus {
-            color: black;
+            color: #000;
             text-decoration: none;
-            cursor: pointer;
         }
+
+        .btn {
+           padding: 12px 20px;
+           background: #017143;
+           color: #fff;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           font-size: 16px;
+           transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+           background: #014f2a;
+       }
     </style>
 </head>
 <body>
+<section>
+        <header>
+            <div class="hi">
+         
+                <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
+                <h1>Norwood International</h1>
+            </div>
+
+
+            <ul>
+                <li><a href="admin-index.html">Home</a></li>
+                <li><a href="admin-product.php">Products</a></li>
+                <li><a href="supplier.php">Suppliers</a></li>
+                <li><a href="employee.php">Employees</a></li>
+                <li><a href="delivery.html">Delivery</a></li>
+            </ul>
+        </header>
+    
     <div class="container">
         <h1>Supplier Management</h1>
         <form action="supplier.php" method="post">
             <div class="form-group">
                 <label for="supplierId">Supplier ID:</label>
                 <input type="number" name="supplierId" id="supplierId" required>
-            </div>
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" name="name" id="name" required>
@@ -197,7 +249,7 @@ if (isset($_POST['searchSupplier'])) {
                 </div>
             </form>
         </div>
-
+        
         <?php if (!empty($suppliers)) { ?>
             <h2>Supplier Details</h2>
             <?php foreach ($suppliers as $row) { ?>
@@ -221,7 +273,6 @@ if (isset($_POST['searchSupplier'])) {
         <?php } ?>
     </div>
 
-    <!-- The Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">×</span>
@@ -290,5 +341,23 @@ if (isset($_POST['searchSupplier'])) {
             }
         }
     </script>
+
+<div style="text-align: right; margin: 20px;">
+           <form action="report-supplier.php" method="post">
+                <button type="submit" name="generate_pdf" class="btn">Generate PDF Report</button>
+           </form>
+        </div>
+</section>
+<footer class="footer">
+            <div class="social">
+                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
+            </div>
+            <p align="center"> &#169; Copyright Norwood International 2024. All rights reserved | Powered by Dev Nest</p>
+            <p align="center"> Established in 2022</p>
+            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
+            <br>
+        </footer>
 </body>
 </html>

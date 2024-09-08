@@ -1,0 +1,601 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins';
+}
+
+body{
+    background-color: beige;
+}
+section{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: beige;
+}
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
+
+header .hi{
+    display: flex;
+    position: relative;
+/* background-color: #d4af37; */
+border-radius: 100%;
+
+    align-content: center;
+  
+}
+
+header .hi h1{
+
+
+    font-size: 30px;
+    align-content: center;
+}
+.hi{
+color: black;
+font-family: "Kanit", sans-serif;
+font-weight: 100;
+font-style: normal;
+}
+
+
+header ul{
+    position: relative;
+    display: flex;
+}
+
+header ul li{
+    list-style: none;
+}
+
+header ul li a{
+    display: inline-block;
+    color: #333;
+    font-weight: 400;
+    margin-left: 40px;
+    font-size: 18PX;
+    text-decoration: none;
+    transition: 0.1s;
+}
+header ul li a:hover{
+    color: #017143;
+    font-weight: bold;
+}
+
+img .logo{
+    width: 80px;  /* Set the width to 200 pixels */
+    height: 100px; /* Set the height to 100 pixels */
+}
+
+
+.content{
+    margin-top: 80px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content .textBox{
+    position: relative;
+    max-width: 600px;
+}
+
+.content .textBox h2{
+    color: #333;
+    font-size: 3.5em;
+    line-height: 1.4em;
+    font-weight: 500;
+}
+
+.content .textBox h2 span{
+    color: #017143;
+    font-size: 1.2em;
+    font-weight: 900;
+}
+
+.content .textBox p{
+    color:#333;
+}
+
+.btnshop{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #017143;
+    color: #ffff;
+    border-radius: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+.btnshop:hover{
+    background: #01834d;
+    color: beige;
+}
+.content .imgBox{
+    width: 600px;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+}
+
+.circle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #017143;
+    clip-path: circle(600px at right 700px);
+}
+
+footer{
+    background-color: #f5f5dc;
+}
+
+footer .social{
+    display: flex;
+    justify-content: center;
+}
+
+footer .social a{
+   font-size: 40px;
+   padding: 10px;
+}
+
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: center;
+    margin-top: 15%;
+    margin-left: 10px;
+}
+
+.form-box h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form select{
+    width: 100%;
+    margin: 15px 0;
+    padding: 10px;
+    color: #333;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s ease-in-out;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #218838;
+}
+
+.message{
+    display: block;
+    background-color: transparent;
+    padding: 1.5rem 1rem;
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 2rem;
+}
+
+.product-display{
+    margin: 2rem 0;
+    margin-right: 250px;
+}
+
+.product-display .product-display-table{
+    width: 100%;
+    text-align: center;
+    margin: 100px;
+}
+
+.product-display .product-display-table thead{
+    padding: 1rem;
+    font-size: 25px;
+    background-color: #cacaca;
+}
+
+.product-display .product-display-table th{
+    padding: 0.7rem;
+}
+
+.product-display .product-display-table td{
+    padding: 0.7rem;
+    border-bottom: 2px solid black;
+}
+
+.btn{
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.product-display .product-display-table .btn:first-child{
+    margin-top: 0;
+}
+
+.product-display .product-display-table .btn:last-child{
+    margin-top: 0;
+    background-color: crimson;
+}
+
+.product-display .product-display-table .btn:first-child:hover{
+    background-color: black;
+}
+
+.product-display .product-display-table .btn:last-child:hover{
+    background-color: black;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins';
+}
+
+body{
+    background-color: beige;
+}
+section{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: beige;
+}
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
+
+header .hi{
+    display: flex;
+    position: relative;
+/* background-color: #d4af37; */
+border-radius: 100%;
+
+    align-content: center;
+  
+}
+
+header .hi h1{
+
+
+    font-size: 30px;
+    align-content: center;
+}
+.hi{
+color: black;
+font-family: "Kanit", sans-serif;
+font-weight: 100;
+font-style: normal;
+}
+
+
+header ul{
+    position: relative;
+    display: flex;
+}
+
+header ul li{
+    list-style: none;
+}
+
+header ul li a{
+    display: inline-block;
+    color: #333;
+    font-weight: 400;
+    margin-left: 40px;
+    font-size: 18PX;
+    text-decoration: none;
+    transition: 0.1s;
+}
+header ul li a:hover{
+    color: #017143;
+    font-weight: bold;
+}
+
+img .logo{
+    width: 80px;  /* Set the width to 200 pixels */
+    height: 100px; /* Set the height to 100 pixels */
+}
+
+
+.content{
+    margin-top: 80px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content .textBox{
+    position: relative;
+    max-width: 600px;
+}
+
+.content .textBox h2{
+    color: #333;
+    font-size: 3.5em;
+    line-height: 1.4em;
+    font-weight: 500;
+}
+
+.content .textBox h2 span{
+    color: #017143;
+    font-size: 1.2em;
+    font-weight: 900;
+}
+
+.content .textBox p{
+    color:#333;
+}
+
+.btnshop{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #017143;
+    color: #ffff;
+    border-radius: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+.btnshop:hover{
+    background: #01834d;
+    color: beige;
+}
+.content .imgBox{
+    width: 600px;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+}
+
+.circle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #017143;
+    clip-path: circle(600px at right 700px);
+}
+
+footer{
+    background-color: #f5f5dc;
+}
+
+footer .social{
+    display: flex;
+    justify-content: center;
+}
+
+footer .social a{
+   font-size: 40px;
+   padding: 10px;
+}
+
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-box {
+    background-color: #C2B280;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: center;
+    margin-top: 15%;
+    margin-left: 10px;
+}
+
+.form-box h2 {
+    margin-bottom: 20px;
+    font-size: 30px;
+    color: #333;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #F5F5DC;
+}
+
+form select{
+    width: 100%;
+    margin: 15px 0;
+    padding: 10px;
+    color: #333;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s ease-in-out;
+    background-color: #F5F5DC;
+}
+
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #017143;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #218838;
+}
+
+.message{
+    display: block;
+    background-color: transparent;
+    padding: 1.5rem 1rem;
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 2rem;
+}
+
+.product-display{
+    margin: 2rem 0;
+    margin-right: 250px;
+}
+
+.product-display .product-display-table{
+    width: 100%;
+    text-align: center;
+    margin: 100px;
+}
+
+.product-display .product-display-table thead{
+    padding: 1rem;
+    font-size: 25px;
+    background-color: #cacaca;
+}
+
+.product-display .product-display-table th{
+    padding: 0.7rem;
+}
+
+.product-display .product-display-table td{
+    padding: 0.7rem;
+    border-bottom: 2px solid black;
+}
+
+.btn{
+    width: 100%;
+    padding: 10px;
+    background-color: #017143;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.product-display .product-display-table .btn:first-child{
+    margin-top: 0;
+}
+
+.product-display .product-display-table .btn:last-child{
+    margin-top: 0;
+    background-color: crimson;
+}
+
+.product-display .product-display-table .btn:first-child:hover{
+    background-color: black;
+}
+
+.product-display .product-display-table .btn:last-child:hover{
+    background-color: black;
+}
+
+.generate-report {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.generate-report .btn-generate {
+    padding: 10px 20px;
+    background-color: #017143;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.generate-report .btn-generate:hover {
+    background-color: #014f32;
+}
