@@ -1,6 +1,8 @@
 <?php
-session_start();
 require 'config.php';
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Check if user is logged in
 if (!isset($_SESSION['userId'])) {
@@ -10,36 +12,74 @@ if (!isset($_SESSION['userId'])) {
 
 $userId = $_SESSION['userId'];
 
-if (isset($_POST['submitFeedback'])) {
-    $email = $_POST['email'];
+// Fetch user's email from tbl_user
+$userQuery = $conn->prepare("SELECT email FROM tbl_user WHERE userId = ?");
+$userQuery->bind_param("i", $userId);
+$userQuery->execute();
+$userQuery->bind_result($email);
+$userQuery->fetch();
+$userQuery->close();
+
+// Check if the user has already submitted feedback
+$feedbackCheckQuery = $conn->prepare("SELECT COUNT(*) FROM tbl_feedback WHERE userId = ?");
+$feedbackCheckQuery->bind_param("i", $userId);
+$feedbackCheckQuery->execute();
+$feedbackCheckQuery->bind_result($feedbackCount);
+$feedbackCheckQuery->fetch();
+$feedbackCheckQuery->close();
+
+// Handle feedback submission
+if (isset($_POST['submitFeedback']) && $feedbackCount == 0) {
     $message = $_POST['message'];
     $stars = $_POST['stars'];
 
-    $query = "INSERT INTO tbl_feedback (userId, email, message, stars) VALUES ('$userId', '$email', '$message', '$stars')";
-    mysqli_query($conn, $query);
-    header("Location: feedback.php");
+    $stmt = $conn->prepare("INSERT INTO tbl_feedback (userId, email, message, stars) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("isss", $userId, $email, $message, $stars);
+    $stmt->execute();
+    $stmt->close();
+    
+    echo "<script>alert('Feedback submitted successfully!'); window.location.href = 'feedback.php';</script>";
 }
 
+// Handle feedback update
 if (isset($_POST['updateFeedback'])) {
     $feedbackId = $_POST['feedbackId'];
     $message = $_POST['message'];
     $stars = $_POST['stars'];
 
-    $query = "UPDATE tbl_feedback SET message='$message', stars='$stars' WHERE feedbackId='$feedbackId' AND userId='$userId'";
-    mysqli_query($conn, $query);
-    header("Location: feedback.php");
+    $stmt = $conn->prepare("UPDATE tbl_feedback SET message=?, stars=? WHERE feedbackId=? AND userId=?");
+    $stmt->bind_param("ssii", $message, $stars, $feedbackId, $userId);
+    $stmt->execute();
+    $stmt->close();
+    
+    echo "<script>alert('Feedback updated successfully!'); window.location.href = 'feedback.php';</script>";
 }
 
+
+// Handle feedback deletion
 if (isset($_POST['deleteFeedback'])) {
     $feedbackId = $_POST['feedbackId'];
 
-    $query = "DELETE FROM tbl_feedback WHERE feedbackId='$feedbackId' AND userId='$userId'";
-    mysqli_query($conn, $query);
-    header("Location: feedback.php");
+    $stmt = $conn->prepare("DELETE FROM tbl_feedback WHERE feedbackId=? AND userId=?");
+    $stmt->bind_param("ii", $feedbackId, $userId);
+    $stmt->execute();
+    $stmt->close();
+    
+    echo "<script>alert('Feedback deleted successfully!'); window.location.href = 'feedback.php';</script>";
 }
 
-$feedbacks = mysqli_query($conn, "SELECT * FROM tbl_feedback");
+// Fetch all feedbacks
+$feedbacks = $conn->query("SELECT * FROM tbl_feedback");
+
+// Fetch the logged-in user's feedback
+$userFeedbackQuery = $conn->prepare("SELECT * FROM tbl_feedback WHERE userId = ?");
+$userFeedbackQuery->bind_param("i", $userId);
+$userFeedbackQuery->execute();
+$userFeedbackResult = $userFeedbackQuery->get_result();
+$userFeedback = $userFeedbackResult->fetch_assoc();
+$userFeedbackQuery->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,138 +87,298 @@ $feedbacks = mysqli_query($conn, "SELECT * FROM tbl_feedback");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback</title>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .form-group button {
-            padding: 10px 15px;
-            background: #017143;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .form-group button:hover {
-            background: #014f2a;
-        }
-        .feedback {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .feedback-actions {
-            margin-top: 10px;
-        }
-        .feedback-actions button {
-            margin-right: 5px;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins';
+}
+
+section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background: beige;
+}
+
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
+
+header .hi{
+    display: flex;
+    position: relative;
+/* background-color: #d4af37; */
+border-radius: 100%;
+
+    align-content: center;
+  
+}
+
+header .hi h1{
+
+
+    font-size: 30px;
+    align-content: center;
+}
+.hi{
+color: black;
+font-family: "Kanit", sans-serif;
+font-weight: 100;
+font-style: normal;
+}
+
+
+header ul{
+    position: relative;
+    display: flex;
+}
+
+header ul li{
+    list-style: none;
+}
+
+header ul li a{
+    display: inline-block;
+    color: #333;
+    font-weight: 400;
+    margin-left: 40px;
+    font-size: 18PX;
+    text-decoration: none;
+    transition: 0.1s;
+}
+header ul li a:hover{
+    color: #017143;
+    font-weight: bold;
+}
+
+img .logo{
+    width: 80px;  /* Set the width to 200 pixels */
+    height: 100px; /* Set the height to 100 pixels */
+}
+
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+h1, h2 {
+    text-align: center;
+    font-weight: 600;
+    color: #017143;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f7f7f7;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: #017143;
+}
+
+.form-group button {
+    width: 100%;
+    background-color: #017143;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: #025d32;
+}
+
+.feedback {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.feedback p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.feedback-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.feedback-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #017143;
+    color: #fff;
+}
+
+.feedback-actions button:hover {
+    background-color: #025d32;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    cursor: pointer;
+}
+
+
+
     </style>
+
 </head>
 <body>
+<section>
+    <div class="circle"></div>
+    <header>
+        <div class="hi">
+            <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
+            <h1>Norwood International</h1>
+        </div>
+        <ul>
+                <li><a href="customer-index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="feedback.php">Feedback</a></li>
+                <li><a href="cart.php">Cart</a></li>
+                <li><a href="login.php">Log Out</a></li>
+            </ul>
+    </header>
+    
     <div class="container">
-        <h1>Submit Feedback</h1>
-        <form action="feedback.php" method="post">
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Message:</label>
-                <textarea name="message" id="message" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="stars">Stars:</label>
-                <select name="stars" id="stars" required>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="5">5 Stars</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit" name="submitFeedback">Submit</button>
-            </div>
-        </form>
-
-        <h2>All Feedback</h2>
-        <?php while ($row = mysqli_fetch_assoc($feedbacks)) { ?>
+       
+        <?php if ($feedbackCount == 0) { ?>
+            <h1>Submit Feedback</h1>
+            <form action="feedback.php" method="post" class="feedback-form">
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea name="message" id="message" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="stars">Stars:</label>
+                    <select name="stars" id="stars" required>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" name="submitFeedback">Submit</button>
+                </div>
+            </form>
+        <?php } else { ?>
+            <!-- <p>You have already submitted feedback.</p> -->
+        <?php } ?>
+        <!-- <form action="feedbackpdf.php" method="post">
+            <button type="submit" name="generat_feedback_pdf" class="btn">Generate PDF Report</button>
+        </form> -->
+       
+        <?php if ($userFeedback) { ?>
+            <h2>Your Feedback</h2>
             <div class="feedback">
-                <p><strong>Email:</strong> <?php echo $row['email']; ?></p>
-                <p><strong>Message:</strong> <?php echo $row['message']; ?></p>
-                <p><strong>Stars:</strong> <?php echo $row['stars']; ?></p>
-                <?php if ($row['userId'] == $userId) { ?>
-                    <div class="feedback-actions">
-                        <button onclick="openModal(<?php echo $row['feedbackId']; ?>, '<?php echo $row['message']; ?>', <?php echo $row['stars']; ?>)">Update</button>
-                        <form action="feedback.php" method="post" style="display:inline;">
-                            <input type="hidden" name="feedbackId" value="<?php echo $row['feedbackId']; ?>">
-                            <button type="submit" name="deleteFeedback">Delete</button>
-                        </form>
-                    </div>
-                <?php } ?>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($userFeedback['email']); ?></p>
+                <p><strong>Message:</strong> <?php echo htmlspecialchars($userFeedback['message']); ?></p>
+                <p><strong>Stars:</strong> <?php echo htmlspecialchars($userFeedback['stars']); ?></p>
+                <div class="feedback-actions">
+                    <button onclick="openModal(<?php echo $userFeedback['feedbackId']; ?>, '<?php echo htmlspecialchars($userFeedback['message']); ?>', <?php echo $userFeedback['stars']; ?>)">Update</button>
+                    <form action="feedback.php" method="post" style="display:inline;">
+                        <input type="hidden" name="feedbackId" value="<?php echo $userFeedback['feedbackId']; ?>">
+                        <button type="submit" name="deleteFeedback">Delete</button>
+                    </form>
+                </div>
             </div>
         <?php } ?>
+        <h2>All Feedbacks</h2>
+        <?php while ($row = $feedbacks->fetch_assoc()) { ?>
+            <?php if ($row['userId'] != $userId) { ?>
+                <div class="feedback">
+                    <p><strong>Email:</strong> <?php echo htmlspecialchars($row['email']); ?></p>
+                    <p><strong>Message:</strong> <?php echo htmlspecialchars($row['message']); ?></p>
+                    <p><strong>Stars:</strong> <?php echo htmlspecialchars($row['stars']); ?></p>
+                </div>
+            <?php } ?>
+        <?php } ?>
     </div>
-
-    <!-- The Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">×</span>
@@ -205,15 +405,10 @@ $feedbacks = mysqli_query($conn, "SELECT * FROM tbl_feedback");
             </form>
         </div>
     </div>
-
     <script>
-        // Get the modal
         var modal = document.getElementById("myModal");
-
-        // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
-        // Function to open the modal
         function openModal(feedbackId, message, stars) {
             document.getElementById("feedbackId").value = feedbackId;
             document.getElementById("editMessage").value = message;
@@ -221,17 +416,16 @@ $feedbacks = mysqli_query($conn, "SELECT * FROM tbl_feedback");
             modal.style.display = "block";
         }
 
-        // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
             modal.style.display = "none";
         }
 
-        // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
     </script>
+</section>
 </body>
-</html
+</html>

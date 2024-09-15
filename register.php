@@ -1,35 +1,52 @@
 <?php
 require 'config.php';
-if(isset($_POST["regBtn"]))
-{
-    $fname=$_POST["fname"];
-    $lname=$_POST["lname"];
-    $email=$_POST["email"];
-    $password=$_POST["password"];
-    $confirmpassword=$_POST["confirmpassword"];
-    $duplicate="SELECT * FROM tbl_user WHERE email='$email'";
-    $result=$conn->query($duplicate);
 
-    if($result->num_rows>0)
-    {
-        echo '<script> alert("Email has been already registered") </script>';
-    }
-    else
-    {
-        if($password == $confirmpassword)
-        {
-            $query="INSERT INTO tbl_user  VALUES('','$fname','$lname','$email','$password')";
-            mysqli_query($conn,$query);
-            echo '<script> alert("Registration Successful") </script>';
-            header("Location: login.php");
+if (isset($_POST["regBtn"])) {
+    $fname = trim($_POST["fname"]);
+    $lname = trim($_POST["lname"]);
+    $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
+    $password = $_POST["password"];
+    $confirmpassword = $_POST["confirmpassword"];
+    
+    // Check if email is valid
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo '<script>alert("Invalid email format");</script>';
+    } else {
+        // Check if email already exists
+        $duplicate = "SELECT * FROM tbl_user WHERE email = ?";
+        $stmt = $conn->prepare($duplicate);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            echo '<script>alert("Email has already been registered")</script>';
+        } else {
+            if ($password === $confirmpassword) {
+                // Hash the password before storing it
+                $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+                
+                // Insert user into the database
+                $query = "INSERT INTO tbl_user (fname, lname, email, password) VALUES (?, ?, ?, ?)";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("ssss", $fname, $lname, $email, $hashed_password);
+                
+                if ($stmt->execute()) {
+                    echo '<script>alert("Registration Successful"); window.location.href="login.php";</script>';
+                    exit();  // Ensure redirection
+                } else {
+                    echo '<script>alert("Registration failed")</script>';
+                }
+            } else {
+                echo '<script>alert("Passwords do not match")</script>';
+            }
         }
-        else
-        {
-            echo '<script> alert("Password does not match") </script>';
-        }
+        $stmt->close();  // Close the statement
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

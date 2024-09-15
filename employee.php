@@ -1,5 +1,4 @@
 <?php
-session_start();
 require 'config.php';
 
 // Check if user is logged in
@@ -54,34 +53,120 @@ if (isset($_POST['searchEmployee'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Management</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
+    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins';
+
+}
+
+section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background: beige;
+}
+
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
+
+header .hi{
+    display: flex;
+    position: relative;
+/* background-color: #d4af37; */
+border-radius: 100%;
+
+    align-content: center;
+  
+}
+
+header .hi h1{
+
+
+    font-size: 30px;
+    align-content: center;
+}
+.hi{
+color: black;
+font-family: "Kanit", sans-serif;
+font-weight: 100;
+font-style: normal;
+}
+
+
+header ul{
+    position: relative;
+    display: flex;
+}
+
+header ul li{
+    list-style: none;
+}
+
+header ul li a{
+    display: inline-block;
+    color: #333;
+    font-weight: 400;
+    margin-left: 40px;
+    font-size: 18PX;
+    text-decoration: none;
+    transition: 0.1s;
+}
+header ul li a:hover{
+    color: #017143;
+    font-weight: bold;
+}
+
+img .logo{
+    width: 80px;  /* Set the width to 200 pixels */
+    height: 100px; /* Set the height to 100 pixels */
+}
+
         .container {
             max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
+            margin: 200px auto;
+            background: #f5f5dc;
+            padding: 100px;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 5px;
+            font-weight: 600;
         }
+
         .form-group input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .form-group button {
             padding: 10px 15px;
             background: #017143;
@@ -89,64 +174,89 @@ if (isset($_POST['searchEmployee'])) {
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background 0.3s ease;
         }
+
         .form-group button:hover {
             background: #014f2a;
         }
-        .employee {
+
+        .employee-card {
             margin-bottom: 20px;
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
+
+        .employee-card p {
+            margin: 5px 0;
+        }
+
         .employee-actions {
             margin-top: 10px;
         }
+
         .employee-actions button {
             margin-right: 5px;
         }
-        .search-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0,0,0,0.5);
             padding-top: 60px;
+            overflow: auto;
         }
+
         .modal-content {
-            background-color: #fefefe;
+            background-color: #fff;
             margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 60%;
+            border-radius: 8px;
         }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
-        }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
             cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
         }
     </style>
 </head>
 <body>
+<header>
+            <div class="hi">
+                <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
+                <h1>Norwood International</h1>
+            </div>
+
+
+            <ul>
+                <li><a href="admin-index.html">Home</a></li>
+                <li><a href="admin-product.php">Products</a></li>
+                <li><a href="supplier.php">Suppliers</a></li>
+                <li><a href="employee.php">Employees</a></li>
+                <li><a href="admin_order.php">Orders</a></li>
+                <li><a href="admin-dashboard.php">Dashboard</a></li>
+            </ul>
+        </header>
+    
     <div class="container">
-        <h1>Employee Management</h1>
+        <h2>Employee Management</h2>
         <form action="employee.php" method="post">
             <div class="form-group">
                 <label for="employeeId">Employee ID:</label>
@@ -173,23 +283,21 @@ if (isset($_POST['searchEmployee'])) {
             </div>
         </form>
 
-        <div class="search-container">
-            <h2>Search Employee</h2>
-            <form action="employee.php" method="post">
-                <div class="form-group">
-                    <label for="searchEmployeeId">Employee ID:</label>
-                    <input type="number" name="employeeId" id="searchEmployeeId" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="searchEmployee">Search</button>
-                </div>
-            </form>
-        </div>
+        <h3>Search Employee</h3>
+        <form action="employee.php" method="post">
+            <div class="form-group">
+                <label for="searchEmployeeId">Employee ID:</label>
+                <input type="number" name="employeeId" id="searchEmployeeId" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="searchEmployee">Search</button>
+            </div>
+        </form>
 
         <?php if (!empty($employees)) { ?>
-            <h2>Employee Details</h2>
+            <h3>Employee Details</h3>
             <?php foreach ($employees as $row) { ?>
-                <div class="employee">
+                <div class="employee-card">
                     <p><strong>ID:</strong> <?php echo $row['employeeId']; ?></p>
                     <p><strong>Name:</strong> <?php echo $row['name']; ?></p>
                     <p><strong>Contact Number:</strong> <?php echo $row['contactNumber']; ?></p>
@@ -197,7 +305,7 @@ if (isset($_POST['searchEmployee'])) {
                     <p><strong>Email:</strong> <?php echo $row['email']; ?></p>
                     <div class="employee-actions">
                         <button onclick="openModal(<?php echo $row['employeeId']; ?>, '<?php echo $row['name']; ?>', '<?php echo $row['contactNumber']; ?>', <?php echo $row['salary']; ?>, '<?php echo $row['email']; ?>')">Update</button>
-                        <form action="employee.php" method="post" style="display:inline;">
+                        <form action="employee.php" method="post" style="display: inline;">
                             <input type="hidden" name="employeeId" value="<?php echo $row['employeeId']; ?>">
                             <button type="submit" name="deleteEmployee">Delete</button>
                         </form>
@@ -207,98 +315,49 @@ if (isset($_POST['searchEmployee'])) {
         <?php } ?>
     </div>
 
-
-                    <!-- The Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close">×</span>
-        <h2>Edit Employee</h2>
-        <form action="employee.php" method="post">
-            <input type="hidden" name="employeeId" id="editEmployeeId">
-            <div class="form-group">
-                <label for="editName">Name:</label>
-                <input type="text" name="name" id="editName" required>
-            </div>
-            <div class="form-group">
-                <label for="editContactNumber">Contact Number:</label>
-                <input type="text" name="contactNumber" id="editContactNumber" required>
-            </div>
-            <div class="form-group">
-                <label for="editSalary">Salary:</label>
-                <input type="number" step="0.01" name="salary" id="editSalary" required>
-            </div>
-            <div class="form-group">
-                <label for="editEmail">Email:</label>
-                <input type="email" name="email" id="editEmail" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" name="updateEmployee">Update</button>
-            </div>
-        </form>
+    <!-- Update Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Update Employee</h2>
+            <form action="employee.php" method="post">
+                <input type="hidden" name="employeeId" id="modalEmployeeId">
+                <div class="form-group">
+                    <label for="modalName">Name:</label>
+                    <input type="text" name="name" id="modalName" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalContactNumber">Contact Number:</label>
+                    <input type="text" name="contactNumber" id="modalContactNumber" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalSalary">Salary:</label>
+                    <input type="number" step="0.01" name="salary" id="modalSalary" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalEmail">Email:</label>
+                    <input type="email" name="email" id="modalEmail" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" name="updateEmployee">Update Employee</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-            </body>
-            <script>
-    // Get the modal
-    var modal = document.getElementById("myModal");
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // Function to open the modal
-    function openModal(employeeId, name, contactNumber, salary, email) {
-        document.getElementById("editEmployeeId").value = employeeId;
-        document.getElementById("editName").value = name;
-        document.getElementById("editContactNumber").value = contactNumber;
-        document.getElementById("editSalary").value = salary;
-        document.getElementById("editEmail").value = email;
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+    <script>
+        function openModal(employeeId, name, contactNumber, salary, email) {
+            document.getElementById('modalEmployeeId').value = employeeId;
+            document.getElementById('modalName').value = name;
+            document.getElementById('modalContactNumber').value = contactNumber;
+            document.getElementById('modalSalary').value = salary;
+            document.getElementById('modalEmail').value = email;
+            document.getElementById('updateModal').style.display = 'block';
         }
-    }
-</script>
-<style>
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-}
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-</style>
+
+        function closeModal() {
+            document.getElementById('updateModal').style.display = 'none';
+        }
+    </script>
+</body>
 </html>

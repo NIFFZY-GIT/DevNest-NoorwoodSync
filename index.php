@@ -2,31 +2,41 @@
 session_start();
 require 'config.php';
 
-if(isset($_POST["loginBtn"])) {
-    $email = $_POST['email'];
+if (isset($_POST["loginBtn"])) {
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
-    $result = mysqli_query($conn, "SELECT * FROM tbl_user WHERE email='$email'");
-    $row = mysqli_fetch_assoc($result);
-
-    if(mysqli_num_rows($result) > 0) {
-        if($password == $row['password']) {
-            $_SESSION["login"] = true;
-            $_SESSION["userId"] = $row["userId"];
-            $_SESSION["userType"] = $row["userType"];
-
-            // Redirect user based on user type
-            if ($row['userType'] == 'admin') {
-                header("Location: admin-index.html");
-            } else {
-                header("Location: customer-index.html");
-            }
-            echo '<script> alert("Successfully logged in") </script>';
-        } else {
-            echo '<script> alert("Check the password again") </script>';
-        }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo '<script>alert("Invalid email format");</script>';
     } else {
-        echo '<script> alert("User not registered") </script>';
+        // Use prepared statement to fetch user
+        $stmt = $conn->prepare("SELECT * FROM tbl_user WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        if ($result->num_rows > 0) {
+            // Verify password
+            if (password_verify($password, $row['password'])) {
+                $_SESSION["login"] = true;
+                $_SESSION["userId"] = $row["userId"];
+                $_SESSION["userType"] = $row["userType"];
+
+                // Redirect based on user type
+                if ($row['userType'] == 'admin') {
+                    echo '<script>window.location.href="admin-index.html";</script>';
+                } else {
+                    echo '<script>window.location.href="customer-index.html";</script>';
+                }
+                exit(); // Stop script after redirection
+            } else {
+                echo '<script>alert("Incorrect password. Please try again.");</script>';
+            }
+        } else {
+            echo '<script>alert("User not registered.");</script>';
+        }
+        $stmt->close(); // Close the statement
     }
 }
 ?>

@@ -15,7 +15,7 @@ section{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: beige
+    background: #f5f5dc
 }
 
 header{
@@ -177,11 +177,11 @@ h1 {
 .category-box {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 80px;
 }
 
 .category {
-    background-color: #fff;
+    background-color: #017143;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -189,6 +189,7 @@ h1 {
     text-align: center;
     transition: transform 0.3s, box-shadow 0.3s;
 }
+
 
 .category img {
     width: 100%;
@@ -199,7 +200,7 @@ h1 {
 .category h2 {
     margin: 15px 0;
     font-size: 1.5em;
-    color: #555;
+    color:#ffff;
     transition: color 0.3s;
 }
 
@@ -215,3 +216,37 @@ h1 {
 .category:hover h2 {
     color: #000;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
