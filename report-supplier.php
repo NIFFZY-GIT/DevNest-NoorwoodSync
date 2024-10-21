@@ -4,7 +4,7 @@
 
 require('fpdf185/fpdf.php');
 
-if (isset($_POST['generate_pdf'])) {
+if (isset($_POST['generate_supplier_pdf'])) {
 
     
     $pdf = new FPDF();
@@ -45,6 +45,6 @@ if (isset($_POST['generate_pdf'])) {
     }
 
     
-    $pdf->Output('D', 'product_report.pdf');
+    $pdf->Output('D', 'Supplier_report.pdf');
 }
 ?>

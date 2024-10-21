@@ -1,176 +1,348 @@
 <?php
 session_start();
-require 'config.php';
-
-if (isset($_POST["loginBtn"])) {
-    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $password = $_POST['password'];
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo '<script>alert("Invalid email format");</script>';
-    } else {
-        // Use prepared statement to fetch user
-        $stmt = $conn->prepare("SELECT * FROM tbl_user WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-
-        if ($result->num_rows > 0) {
-            // Verify password
-            if (password_verify($password, $row['password'])) {
-                $_SESSION["login"] = true;
-                $_SESSION["userId"] = $row["userId"];
-                $_SESSION["userType"] = $row["userType"];
-
-                // Redirect based on user type
-                if ($row['userType'] == 'admin') {
-                    echo '<script>window.location.href="admin-index.html";</script>';
-                } else {
-                    echo '<script>window.location.href="customer-index.html";</script>';
-                }
-                exit(); // Stop script after redirection
-            } else {
-                echo '<script>alert("Incorrect password. Please try again.");</script>';
-            }
-        } else {
-            echo '<script>alert("User not registered.");</script>';
-        }
-        $stmt->close(); // Close the statement
-    }
-}
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/customerindex.css">
     <link rel="icon" type="/image/png" href="images/icon.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Norwood</title>
-    <style>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
 *{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins",sans-serif;
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins';
 }
 
-        body{
-            display: flex;
-            justify-content: center;
-            background: #017143;
-            align-items: center;
-            min-height: 100vh;
-        }
+/* body{
+           background: url('images/hero1.jpg');
+           background-size: cover;
+} */
+section{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: beige;
+}
 
-        .login-container{
-            width: 420px;
-            background: transparent;
-            color: #ffff;
-            border-radius: 10px;
-            padding: 30px 40px;
-        }
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
 
-        .login-container h1{
-            font-size: 36px;
-            text-align: center;
-        }
+header .hi{
+    display: flex;
+    position: relative;
+/* background-color: #d4af37; */
+border-radius: 100%;
 
-        .login-container form .form-group{
-            position: relative;
-            width: 100%;
-            height: 50px;
-            margin: 30px 0;
-        }
+    align-content: center;
+  
+}
 
-        .login-container input{
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            border: none;
-            outline: none;
-            border: 2px solid rgba(255,255,255,.2);
-            border-radius: 40px;
-            font-size: 16px;
-            color: #ffff;
-            padding: 20px 45px 20px;
-        }
+header .hi h1{
 
-        .login-container form .form-group input::placeholder{
-            color: #ffff;
-        }
 
-        .login-container form i{
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: #ffff;
-        }
+    font-size: 30px;
+    align-content: center;
+}
+.hi{
+color: black;
+font-family: "Kanit", sans-serif;
+font-weight: 100;
+font-style: normal;
+}
 
-        .login-container .btn{
-            width: 100%;
-            height: 45px;
-            background: #ffff;
-            border: none;
-            outline: none;
-            border-radius: 40px;
-            box-shadow: 0 0 10px rgba(0,0,0,.1);
-            cursor: pointer;
-            font-size: 16px;
-            color: #333;
-            font-weight: 600;
-        }
 
-        .login-container form .signup{
-            font-size: 14.5px;
-            text-align: center;
-            margin-top: 20px;
-        }
+header ul{
+    position: relative;
+    display: flex;
+}
 
-        .login-container p a{
-            color: #ffff;
-            text-decoration: none;
-            font-weight: 600;
-        }
+header ul li{
+    list-style: none;
+}
 
-        .login-container p a:hover{
-            text-decoration: underline;
-            
-        }
-    </style>
-</head>
+header ul li a{
+    display: inline-block;
+    color: #333;
+    font-weight: 400;
+    margin-left: 40px;
+    font-size: 18PX;
+    text-decoration: none;
+    transition: 0.1s;
+}
+header ul li a:hover{
+    color: #017143;
+    font-weight: bold;
+}
+
+img .logo{
+    width: 80px;  /* Set the width to 200 pixels */
+    height: 100px; /* Set the height to 100 pixels */
+}
+
+
+.content{
+    margin-top: 80px;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content .textBox{
+    position: relative;
+    max-width: 600px;
+}
+
+.content .textBox h2{
+    color: #333;
+    font-size: 3.5em;
+    line-height: 1.4em;
+    font-weight: 500;
+}
+
+.content .textBox h2 span{
+    color: #017143;
+    font-size: 1.2em;
+    font-weight: 900;
+}
+
+.content .textBox p{
+    color:#333;
+}
+
+.btnshop{
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #017143;
+    color: #ffff;
+    border-radius: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+.btnshop:hover{
+    background: #01834d;
+    color: beige;
+}
+.content .imgBox{
+    width: 600px;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 50px;
+}
+
+.circle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #017143;
+    clip-path: circle(600px at right 700px);
+}
+
+footer{
+    background-color: #f5f5dc;
+}
+
+footer .social{
+    display: flex;
+    justify-content: center;
+}
+
+footer .social a{
+   font-size: 40px;
+   padding: 10px;
+}
+
+
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown .dropbtn {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    border-radius: 20px;
+    width: 100%;
+    background-color: beige;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content li {
+    list-style: none;
+}
+
+.dropdown-content li a {
+    color: #333;
+    display: block;
+    text-align: left;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content li a:hover {
+    background-color: #017143;
+    color: #fff;
+}
+
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+header ul {
+    display: flex;
+    list-style: none;
+}
+
+header ul li {
+    position: relative;
+}
+
+header ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+    margin-left: 40px;
+    padding: 10px;
+    transition: color 0.3s;
+}
+.imgBox img {
+    width: 100%; /* Adjusted width */
+    height: auto;
+
+}
+.dropdown ul li a{
+    margin: 0px;
+    border-radius: 20px;
+}
+
+header ul li a:hover {
+    color: #017143;
+}
+
+</style>
 <body>
+
+
+
+
+    <section>
+        <div class="circle"></div>
         <header>
             <div class="hi">
-         
                 <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
+                <h1>Norwood International</h1>
             </div>
-            
-        </header>
 
-        <div class="login-container">
-            <form action="login.php" method="post">
-                <h1>Login</h1>
-                <div class="form-group">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
-                    <i class="fa-solid fa-user" style="color: #ffff;"></i>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required>
-                    <i class="fa-solid fa-lock" style="color: #ffff;"></i>
-                </div>
-                <button class="btn" name="loginBtn">Login</button>
-                <div class="signup">
-                    <p>Don't have an account?
-                    <a href="register.php">Register</a></p>
-                </div>
-            </form>
+       
+            <ul class="nav-links">
+                <li><a href="index.php">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Products</a>
+                    <ul class="dropdown-content">
+                        <li><a href="tea.php">Tea</a></li>
+                        <li><a href="bites.php">Snacks</a></li>
+                    </ul>
+                </li>
+             
+                <li><a href="feedback.php">Feedback</a></li>
+                <li><a href="cart.php">Cart</a></li>
+                <li><a href="about-us.php">About Us</a></li>
+            </ul>
+
+
+        </header>
+        <div class="content">
+        <div class="textBox">
+    <h2>Discover exquisite <span>teas</span> and delightful <span style="color:rgb(90, 17, 17)">snacks</span> in a cozy haven.</h2>
+    <p>Discover the finest selection of Sri Lankan teas and healthy snacks, crafted with natural ingredients. Explore our range of premium products and experience the authentic taste of Sri Lanka delivered right to your doorstep.</p>
+
+
+
+    <?php if (isset($_SESSION['userId']) ): ?>
+   <a href="logout.php" class="btnshop" id="logoutBtn">Logout</a>
+<?php else: ?>
+    <a href="login.php" class="btnshop">Login</a>
+<?php endif; ?>
+
+<script>
+    document.getElementById('logoutBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you really want to log out?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, log out',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'logout.php';
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+</div>
+            <div class="imgBox">
+                <img src="images/image1.png" alt="">
+            </div>
         </div>
+    </section>
+
+        <footer class="footer">
+            <div class="social">
+                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
+            </div>
+            <p align="center"> © Copyright Norwood.lk 2023. All rights reserved</p>
+            <p align="center"> Established in 2022</p>
+            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
+            <br>
+        </footer>
+    
 </body>
 </html>

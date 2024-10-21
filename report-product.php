@@ -4,7 +4,7 @@
 
 require('fpdf185/fpdf.php');
 
-if (isset($_POST['generate_pdf'])) {
+if (isset($_POST['generate_product_pdf'])) {
 
     
     $pdf = new FPDF();
