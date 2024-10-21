@@ -26,17 +26,21 @@ $userCount = fetchCount($conn, 'tbl_user');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="/image/png" href="images/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Admin Dashboard</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
+            /* background-color: #f0f2f5; */
+            /* background: #017143; */
             margin: 0;
             padding: 0;
             color: #333;
+            background: beige
         }
         .header {
-            background-color: #4CAF50;
+            background: #017143;
             color: #fff;
             padding: 20px;
             text-align: center;
@@ -115,12 +119,54 @@ $userCount = fetchCount($conn, 'tbl_user');
             font-size: 24px;
             margin-bottom: 20px;
         }
+        .card .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.card .btn:hover {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+.card .report-btn {
+    background-color: #28a745;
+    display: block;
+    margin: 10px auto;
+}
+
+.card .report-btn:hover {
+    background-color: #218838;
+}
+
+footer{
+    background-color: #f5f5dc;
+}
+
+footer .social{
+    display: flex;
+    justify-content: center;
+}
+
+footer .social a{
+   font-size: 40px;
+   padding: 10px;
+}
+
     </style>
 </head>
 <body>
     <header class="header">
         <h1>Admin Dashboard</h1>
-        <a href="admin-index.html" class="home-button">Go Home</a>
+        <a href="admin-index.php" class="home-button">Go Home</a>
     </header>
     <div class="main-content">
        
@@ -134,29 +180,59 @@ $userCount = fetchCount($conn, 'tbl_user');
             <div class="card">
                 <h3>Manage Products</h3>
                 <p><?php echo $productCount; ?> Products</p>
-                <a href="admin-product.php">Go to Products</a>
+                <form action="report-product.php" method="post">
+        <button type="submit" name="generate_product_pdf" class="btn report-btn">Generate PDF Report</button>
+    </form>
+                <a href="admin-product.php" class="btn">Go to Products</a>
             </div>
             <div class="card">
                 <h3>Manage Suppliers</h3>
                 <p><?php echo $supplierCount; ?> Suppliers</p>
-                <a href="supplier.php">Go to Suppliers</a>
+                <form action="report-supplier.php" method="post">
+        <button type="submit" name="generate_supplier_pdf" class="btn report-btn">Generate PDF Report</button>
+    </form>
+                <a href="supplier.php" class="btn">Go to Suppliers</a>
             </div>
             <div class="card">
                 <h3>Manage Employees</h3>
                 <p><?php echo $employeeCount; ?> Employees</p>
-                <a href="employee.php">Go to Employees</a>
+                <form action="report-employee.php" method="post">
+        <button type="submit" name="generate_employee_pdf" class="btn report-btn">Generate PDF Report</button>
+    </form>
+                <a href="employee.php" class="btn">Go to Employees</a>
             </div>
             <div class="card">
-                <h3>Manage Feedback</h3>
-                <p><?php echo $feedbackCount; ?> Feedbacks</p>
-                <a href="feedback.php">Go to Feedbacks</a>
-            </div>
+    <h3>Manage Feedback</h3>
+    <p><?php echo $feedbackCount; ?> Feedbacks</p>
+    <form action="report-feedback.php" method="post">
+        <button type="submit" name="generat_feedback_pdf" class="btn report-btn">Generate PDF Report</button>
+    </form>
+    <a href="admin-feedback.php" class="btn">Go to Feedbacks</a>
+
+</div>
+
             <div class="card">
                 <h3>Manage Orders</h3>
                 <p><?php echo $orderCount; ?> Orders</p>
-                <a href="admin_order.php">Go to Orders</a>
+                <form action="report-order.php" method="post">
+        <button type="submit" name="generate_order_pdf" class="btn report-btn">Generate PDF Report</button>
+    </form>
+                <a href="admin_order.php" class="btn">Go to Orders</a>
             </div>
         </div>
     </div>
+    <footer class="footer">
+            <div class="social">
+                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
+            </div>
+            <p align="center"> © Copyright Norwood.lk 2023. All rights reserved</p>
+            <p align="center"> Established in 2022</p>
+            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
+            <br>
+        </footer>
 </body>
 </html>
+
+

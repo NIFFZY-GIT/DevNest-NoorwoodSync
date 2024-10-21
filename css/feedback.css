@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins';
+}
+
+section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    background: beige;
+}
+
+
+header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ 
+}
+
+header .hi{
+    display: flex;
+    position: relative;
+/* background-color: #d4af37; */
+border-radius: 100%;
+
+    align-content: center;
+  
+}
+
+header .hi h1{
+
+
+    font-size: 30px;
+    align-content: center;
+}
+.hi{
+color: black;
+font-family: "Kanit", sans-serif;
+font-weight: 100;
+font-style: normal;
+}
+
+
+header ul{
+    position: relative;
+    display: flex;
+}
+
+header ul li{
+    list-style: none;
+}
+
+header ul li a{
+    display: inline-block;
+    color: #333;
+    font-weight: 400;
+    margin-left: 40px;
+    font-size: 18PX;
+    text-decoration: none;
+    transition: 0.1s;
+}
+header ul li a:hover{
+    color: #017143;
+    font-weight: bold;
+}
+
+img .logo{
+    width: 80px;  /* Set the width to 200 pixels */
+    height: 100px; /* Set the height to 100 pixels */
+}
+
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+h1, h2 {
+    text-align: center;
+    font-weight: 600;
+    color: #017143;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #f7f7f7;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: #017143;
+}
+
+.form-group button {
+    width: 100%;
+    background-color: #017143;
+    color: #fff;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: #025d32;
+}
+
+.feedback {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.feedback p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.feedback-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.feedback-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #017143;
+    color: #fff;
+}
+
+.feedback-actions button:hover {
+    background-color: #025d32;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown .dropbtn {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    border-radius: 20px;
+    width: 100%;
+    background-color: beige;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-content li {
+    list-style: none;
+}
+
+.dropdown-content li a {
+    color: #333;
+    display: block;
+    text-align: left;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content li a:hover {
+    background-color: #017143;
+    color: #fff;
+}
+
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+header ul {
+    display: flex;
+    list-style: none;
+}
+
+header ul li {
+    position: relative;
+}
+
+header ul li a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+    margin-left: 40px;
+    padding: 10px;
+    transition: color 0.3s;
+}
+.imgBox img {
+    width: 100%; /* Adjusted width */
+    height: auto;
+
+}
+.dropdown ul li a{
+    margin: 0px;
+    border-radius: 20px;
+}
+
+header ul li a:hover {
+    color: #017143;
+}
+
+footer{
+    background-color: #f5f5dc;
+}
+
+footer .social{
+    display: flex;
+    justify-content: center;
+}
+
+footer .social a{
+   font-size: 40px;
+   padding: 10px;
+}

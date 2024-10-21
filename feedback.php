@@ -27,8 +27,34 @@ $feedbackCheckQuery->execute();
 $feedbackCheckQuery->bind_result($feedbackCount);
 $feedbackCheckQuery->fetch();
 $feedbackCheckQuery->close();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/feedback.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Feedback</title>
+
+
+    <?php
+
 
 // Handle feedback submission
+// if (isset($_POST['submitFeedback']) && $feedbackCount == 0) {
+//     $message = $_POST['message'];
+//     $stars = $_POST['stars'];
+
+//     $stmt = $conn->prepare("INSERT INTO tbl_feedback (userId, email, message, stars) VALUES (?, ?, ?, ?)");
+//     $stmt->bind_param("isss", $userId, $email, $message, $stars);
+//     $stmt->execute();
+//     $stmt->close();
+    
+//     echo "<script>alert('Feedback submitted successfully!'); window.location.href = 'feedback.php';</script>";
+// }
+
 if (isset($_POST['submitFeedback']) && $feedbackCount == 0) {
     $message = $_POST['message'];
     $stars = $_POST['stars'];
@@ -38,7 +64,20 @@ if (isset($_POST['submitFeedback']) && $feedbackCount == 0) {
     $stmt->execute();
     $stmt->close();
     
-    echo "<script>alert('Feedback submitted successfully!'); window.location.href = 'feedback.php';</script>";
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Feedback submitted successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'feedback.php';
+                }
+            });
+        });
+    </script>";
 }
 
 // Handle feedback update
@@ -52,8 +91,22 @@ if (isset($_POST['updateFeedback'])) {
     $stmt->execute();
     $stmt->close();
     
-    echo "<script>alert('Feedback updated successfully!'); window.location.href = 'feedback.php';</script>";
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Feedback updated successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'feedback.php';
+                }
+            });
+        });
+    </script>";
 }
+
 
 
 // Handle feedback deletion
@@ -65,8 +118,22 @@ if (isset($_POST['deleteFeedback'])) {
     $stmt->execute();
     $stmt->close();
     
-    echo "<script>alert('Feedback deleted successfully!'); window.location.href = 'feedback.php';</script>";
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Feedback deleted successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'feedback.php';
+                }
+            });
+        });
+    </script>";
 }
+
 
 // Fetch all feedbacks
 $feedbacks = $conn->query("SELECT * FROM tbl_feedback");
@@ -79,232 +146,6 @@ $userFeedbackResult = $userFeedbackQuery->get_result();
 $userFeedback = $userFeedbackResult->fetch_assoc();
 $userFeedbackQuery->close();
 ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback</title>
-
-    <style>
-@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
-
-*{
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'Poppins';
-}
-
-section {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    padding: 100px;
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    background: beige;
-}
-
-
-header{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
- 
-}
-
-header .hi{
-    display: flex;
-    position: relative;
-/* background-color: #d4af37; */
-border-radius: 100%;
-
-    align-content: center;
-  
-}
-
-header .hi h1{
-
-
-    font-size: 30px;
-    align-content: center;
-}
-.hi{
-color: black;
-font-family: "Kanit", sans-serif;
-font-weight: 100;
-font-style: normal;
-}
-
-
-header ul{
-    position: relative;
-    display: flex;
-}
-
-header ul li{
-    list-style: none;
-}
-
-header ul li a{
-    display: inline-block;
-    color: #333;
-    font-weight: 400;
-    margin-left: 40px;
-    font-size: 18PX;
-    text-decoration: none;
-    transition: 0.1s;
-}
-header ul li a:hover{
-    color: #017143;
-    font-weight: bold;
-}
-
-img .logo{
-    width: 80px;  /* Set the width to 200 pixels */
-    height: 100px; /* Set the height to 100 pixels */
-}
-
-
-.container {
-    width: 100%;
-    max-width: 900px;
-    padding: 40px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
-}
-
-h1, h2 {
-    text-align: center;
-    font-weight: 600;
-    color: #017143;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.form-group input, .form-group textarea, .form-group select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #f7f7f7;
-    transition: border-color 0.3s ease;
-}
-
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-    border-color: #017143;
-}
-
-.form-group button {
-    width: 100%;
-    background-color: #017143;
-    color: #fff;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.form-group button:hover {
-    background-color: #025d32;
-}
-
-.feedback {
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    background-color: #fafafa;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.feedback p {
-    margin-bottom: 10px;
-    font-size: 16px;
-}
-
-.feedback-actions {
-    margin-top: 10px;
-    display: flex;
-    gap: 10px;
-}
-
-.feedback-actions button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #017143;
-    color: #fff;
-}
-
-.feedback-actions button:hover {
-    background-color: #025d32;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover, .close:focus {
-    color: #000;
-    cursor: pointer;
-}
-
-
-
-    </style>
-
 </head>
 <body>
 <section>
@@ -314,12 +155,19 @@ h1, h2 {
             <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
             <h1>Norwood International</h1>
         </div>
-        <ul>
-                <li><a href="customer-index.html">Home</a></li>
-                <li><a href="products.html">Products</a></li>
+        <ul class="nav-links">
+        <li><a href="index.php">Home</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Products</a>
+                    <ul class="dropdown-content">
+                        <li><a href="tea.php">Tea</a></li>
+                        <li><a href="bites.php">Snacks</a></li>
+                    </ul>
+                </li>
+             
                 <li><a href="feedback.php">Feedback</a></li>
                 <li><a href="cart.php">Cart</a></li>
-                <li><a href="login.php">Log Out</a></li>
+                <li><a href="about-us.php">About Us</a></li>
             </ul>
     </header>
     
@@ -426,6 +274,18 @@ h1, h2 {
             }
         }
     </script>
+    
 </section>
+<footer class="footer">
+            <div class="social">
+                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
+            </div>
+            <p align="center"> © Copyright Norwood.lk 2023. All rights reserved</p>
+            <p align="center"> Established in 2022</p>
+            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
+            <br>
+        </footer>
 </body>
 </html>

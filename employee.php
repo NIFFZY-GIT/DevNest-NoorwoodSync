@@ -6,47 +6,7 @@ if (!isset($_SESSION['userId'])) {
     header("Location: login.php");
     exit();
 }
-
-if (isset($_POST['addEmployee'])) {
-    $employeeId = $_POST['employeeId'];
-    $name = $_POST['name'];
-    $contactNumber = $_POST['contactNumber'];
-    $salary = $_POST['salary'];
-    $email = $_POST['email'];
-
-    $query = "INSERT INTO tbl_employee (employeeId, name, contactNumber, salary, email) VALUES ('$employeeId', '$name', '$contactNumber', '$salary', '$email')";
-    mysqli_query($conn, $query);
-    header("Location: employee.php");
-}
-
-if (isset($_POST['deleteEmployee'])) {
-    $employeeId = $_POST['employeeId'];
-
-    $query = "DELETE FROM tbl_employee WHERE employeeId='$employeeId'";
-    mysqli_query($conn, $query);
-    header("Location: employee.php");
-}
-
-if (isset($_POST['updateEmployee'])) {
-    $employeeId = $_POST['employeeId'];
-    $name = $_POST['name'];
-    $contactNumber = $_POST['contactNumber'];
-    $salary = $_POST['salary'];
-    $email = $_POST['email'];
-
-    $query = "UPDATE tbl_employee SET name='$name', contactNumber='$contactNumber', salary='$salary', email='$email' WHERE employeeId='$employeeId'";
-    mysqli_query($conn, $query);
-    header("Location: employee.php");
-}
-
-$employees = [];
-if (isset($_POST['searchEmployee'])) {
-    $employeeId = $_POST['employeeId'];
-    $result = mysqli_query($conn, "SELECT * FROM tbl_employee WHERE employeeId='$employeeId'");
-    $employees = mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,6 +14,8 @@ if (isset($_POST['searchEmployee'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Management</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
     @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
@@ -64,7 +26,9 @@ box-sizing: border-box;
 font-family: 'Poppins';
 
 }
-
+body{
+    background: beige
+}
 section {
     position: relative;
     width: 100%;
@@ -144,10 +108,11 @@ img .logo{
         .container {
             max-width: 800px;
             margin: 200px auto;
-            background: #f5f5dc;
+            /* background: #f5f5dc; */
+            background-color: #C2B280;
             padding: 100px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
         }
 
         .form-group {
@@ -235,9 +200,193 @@ img .logo{
         .close:hover {
             color: #000;
         }
+        
+footer{
+    background-color: #f5f5dc;
+}
+
+footer .social{
+    display: flex;
+    justify-content: center;
+}
+
+footer .social a{
+   font-size: 40px;
+   padding: 10px;
+}
+.employee-actions button{
+    padding: 12px 20px;
+    background: #017143;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
     </style>
 </head>
 <body>
+
+<?php
+// Handle adding a new employee
+if (isset($_POST['addEmployee'])) {
+    $employeeId = $_POST['employeeId'];
+    $name = $_POST['name'];
+    $contactNumber = $_POST['contactNumber'];
+    $salary = $_POST['salary'];
+    $email = $_POST['email'];
+
+    $query = "INSERT INTO tbl_employee (employeeId, name, contactNumber, salary, email) VALUES ('$employeeId', '$name', '$contactNumber', '$salary', '$email')";
+    if (mysqli_query($conn, $query)) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Employee added successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'employee.php';
+                    }
+                });
+            });
+        </script>";
+    } else {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error adding employee: " . mysqli_error($conn) . "',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'employee.php';
+                    }
+                });
+            });
+        </script>";
+    }
+    exit();
+}
+
+// Handle deleting an employee
+if (isset($_POST['deleteEmployee'])) {
+    $employeeId = $_POST['employeeId'];
+
+    $query = "DELETE FROM tbl_employee WHERE employeeId='$employeeId'";
+    if (mysqli_query($conn, $query)) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Employee deleted successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'employee.php';
+                    }
+                });
+            });
+        </script>";
+    } else {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error deleting employee: " . mysqli_error($conn) . "',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'employee.php';
+                    }
+                });
+            });
+        </script>";
+    }
+    exit();
+}
+
+// Handle updating an employee
+if (isset($_POST['updateEmployee'])) {
+    $employeeId = $_POST['employeeId'];
+    $name = $_POST['name'];
+    $contactNumber = $_POST['contactNumber'];
+    $salary = $_POST['salary'];
+    $email = $_POST['email'];
+
+    $query = "UPDATE tbl_employee SET name='$name', contactNumber='$contactNumber', salary='$salary', email='$email' WHERE employeeId='$employeeId'";
+    if (mysqli_query($conn, $query)) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Employee updated successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'employee.php';
+                    }
+                });
+            });
+        </script>";
+    } else {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error updating employee: " . mysqli_error($conn) . "',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'employee.php';
+                    }
+                });
+            });
+        </script>";
+    }
+    exit();
+}
+
+// Handle searching for an employee
+$employees = [];
+if (isset($_POST['searchEmployee'])) {
+    $employeeId = $_POST['employeeId'];
+    $result = mysqli_query($conn, "SELECT * FROM tbl_employee WHERE employeeId='$employeeId'");
+    $employees = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    if (count($employees) > 0) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Search successful! Employee found.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>";
+    } else {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'No Employee Found',
+                    text: 'No employee found with the given ID.',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            });
+        </script>";
+    }
+}
+?>
+
 <header>
             <div class="hi">
                 <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
@@ -246,17 +395,48 @@ img .logo{
 
 
             <ul>
-                <li><a href="admin-index.html">Home</a></li>
+                <li><a href="admin-index.php">Home</a></li>
                 <li><a href="admin-product.php">Products</a></li>
                 <li><a href="supplier.php">Suppliers</a></li>
                 <li><a href="employee.php">Employees</a></li>
                 <li><a href="admin_order.php">Orders</a></li>
+                <li><a href="admin-feedback.php">Feedback</a></li>
                 <li><a href="admin-dashboard.php">Dashboard</a></li>
             </ul>
         </header>
     
     <div class="container">
         <h2>Employee Management</h2>
+        <h3>Search Employee</h3>
+        <form action="employee.php" method="post">
+            <div class="form-group">
+                <label for="searchEmployeeId">Employee ID:</label>
+                <input type="number" name="employeeId" id="searchEmployeeId" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="searchEmployee">Search</button>
+            </div>
+        </form>
+        <?php if (!empty($employees)) { ?>
+            <h3>Employee Details</h3>
+            <?php foreach ($employees as $row) { ?>
+                <div class="employee-card">
+                    <p><strong>ID:</strong> <?php echo $row['employeeId']; ?></p>
+                    <p><strong>Name:</strong> <?php echo $row['name']; ?></p>
+                    <p><strong>Contact Number:</strong> <?php echo $row['contactNumber']; ?></p>
+                    <p><strong>Salary:</strong> <?php echo $row['salary']; ?></p>
+                    <p><strong>Email:</strong> <?php echo $row['email']; ?></p>
+                    <div class="employee-actions">
+                        <button onclick="openModal(<?php echo $row['employeeId']; ?>, '<?php echo $row['name']; ?>', '<?php echo $row['contactNumber']; ?>', <?php echo $row['salary']; ?>, '<?php echo $row['email']; ?>')">Update</button>
+                        <form action="employee.php" method="post" style="display: inline;">
+                            <input type="hidden" name="employeeId" value="<?php echo $row['employeeId']; ?>">
+                            <button type="submit" name="deleteEmployee">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            <?php } ?>
+        <?php } ?>
+        
         <form action="employee.php" method="post">
             <div class="form-group">
                 <label for="employeeId">Employee ID:</label>
@@ -283,36 +463,8 @@ img .logo{
             </div>
         </form>
 
-        <h3>Search Employee</h3>
-        <form action="employee.php" method="post">
-            <div class="form-group">
-                <label for="searchEmployeeId">Employee ID:</label>
-                <input type="number" name="employeeId" id="searchEmployeeId" required>
-            </div>
-            <div class="form-group">
-                <button type="submit" name="searchEmployee">Search</button>
-            </div>
-        </form>
-
-        <?php if (!empty($employees)) { ?>
-            <h3>Employee Details</h3>
-            <?php foreach ($employees as $row) { ?>
-                <div class="employee-card">
-                    <p><strong>ID:</strong> <?php echo $row['employeeId']; ?></p>
-                    <p><strong>Name:</strong> <?php echo $row['name']; ?></p>
-                    <p><strong>Contact Number:</strong> <?php echo $row['contactNumber']; ?></p>
-                    <p><strong>Salary:</strong> <?php echo $row['salary']; ?></p>
-                    <p><strong>Email:</strong> <?php echo $row['email']; ?></p>
-                    <div class="employee-actions">
-                        <button onclick="openModal(<?php echo $row['employeeId']; ?>, '<?php echo $row['name']; ?>', '<?php echo $row['contactNumber']; ?>', <?php echo $row['salary']; ?>, '<?php echo $row['email']; ?>')">Update</button>
-                        <form action="employee.php" method="post" style="display: inline;">
-                            <input type="hidden" name="employeeId" value="<?php echo $row['employeeId']; ?>">
-                            <button type="submit" name="deleteEmployee">Delete</button>
-                        </form>
-                    </div>
-                </div>
-            <?php } ?>
-        <?php } ?>
+   
+       
     </div>
 
     <!-- Update Modal -->
@@ -344,7 +496,17 @@ img .logo{
             </form>
         </div>
     </div>
-
+    <footer class="footer">
+            <div class="social">
+                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
+                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
+            </div>
+            <p align="center"> © Copyright Norwood.lk 2023. All rights reserved</p>
+            <p align="center"> Established in 2022</p>
+            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
+            <br>
+        </footer>
     <script>
         function openModal(employeeId, name, contactNumber, salary, email) {
             document.getElementById('modalEmployeeId').value = employeeId;

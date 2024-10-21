@@ -1,56 +1,32 @@
 <?php
 session_start();
 include 'config.php';
-
-// Fetch all orders
-$orderResult = mysqli_query($conn, "SELECT o.*, u.fname, u.lname FROM tbl_order o JOIN tbl_user u ON o.userId = u.userId");
-
-// Handle order status update
-if (isset($_POST['update_order'])) {
-    $orderId = $_POST['order_id'];
-    $status = $_POST['status'];
-    $deliveryLocation = $_POST['delivery_location'];
-    mysqli_query($conn, "UPDATE tbl_order SET status='$status', deliveryLocation='$deliveryLocation' WHERE orderId='$orderId'");
-
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
-
-// Handle order deletion
-if (isset($_POST['delete_order'])) {
-    $orderId = $_POST['order_id'];
-    mysqli_query($conn, "DELETE FROM tbl_order WHERE orderId='$orderId'");
-    mysqli_query($conn, "DELETE FROM tbl_order_details WHERE orderId='$orderId'");
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
-}
 ?>
 <style>
-    @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+   @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
 *{
 margin: 0;
 padding: 0;
 box-sizing: border-box;
 font-family: 'Poppins';
+
+}
+body{
+    background: beige
 }
 
-body{
-    background-color: beige;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-}
-/* section{
+section {
     position: relative;
     width: 100%;
     min-height: 100vh;
     padding: 100px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
     background: beige;
-} */
+}
+
 
 header{
     position: absolute;
@@ -61,7 +37,6 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 50px;
  
 }
 
@@ -117,18 +92,6 @@ img .logo{
     height: 100px; /* Set the height to 100 pixels */
 }
 
-/* section{
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    padding: 80px 80px 20px 120px;
-    display: flex;
-     justify-content: space-between;
-    align-items: left;
-    background: beige;
-    
-   
-}  */
 
 .topic
 {
@@ -148,15 +111,15 @@ img .logo{
     margin: 20px auto;
     margin-bottom: 20px;
     padding: 20px 20px 20px 20px;
-    background-color: #fff;
+
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
 }
-h1 {
+/* h1 {
     text-align: center;
     color: #0b422b;
     padding-bottom: 20px;
-}
+} */
 
 table {
     border-collapse: collapse;
@@ -262,39 +225,137 @@ footer .social a{
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/admin_order.css">
+    <link rel="stylesheet" href="css/adr.css">
     <link rel="icon" type="/image/png" href="images/icon.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Norwood</title>
 </head>
 <body>
-        <header>
+
+<?php
+// Fetch all orders
+$orderResult = mysqli_query($conn, "SELECT o.*, u.fname, u.lname FROM tbl_order o JOIN tbl_user u ON o.userId = u.userId");
+
+// Handle order status update
+if (isset($_POST['update_order'])) {
+    $orderId = $_POST['order_id'];
+    $status = $_POST['status'];
+    $deliveryLocation = $_POST['delivery_location'];
+    if (mysqli_query($conn, "UPDATE tbl_order SET status='$status', deliveryLocation='$deliveryLocation' WHERE orderId='$orderId'")) {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Order updated successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                    }
+                });
+            });
+        </script>";
+    } else {
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error updating order: " . mysqli_error($conn) . "',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                    }
+                });
+            });
+        </script>";
+    }
+    exit();
+}
+
+// Handle order deletion
+if (isset($_POST['delete_order'])) {
+    $orderId = $_POST['order_id'];
+
+    // Start transaction
+    mysqli_begin_transaction($conn);
+
+    try {
+        // Delete from tbl_order_details first
+        mysqli_query($conn, "DELETE FROM tbl_order_details WHERE orderId='$orderId'");
+
+        // Delete from tbl_order
+        mysqli_query($conn, "DELETE FROM tbl_order WHERE orderId='$orderId'");
+
+        // Commit transaction
+        mysqli_commit($conn);
+
+        // Redirect after successful deletion
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Order deleted successfully!',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                    }
+                });
+            });
+        </script>";
+        exit();
+    } catch (Exception $e) {
+        // Rollback transaction if any query fails
+        mysqli_rollback($conn);
+        echo "<script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to delete order: " . $e->getMessage() . "',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" . $_SERVER['PHP_SELF'] . "';
+                    }
+                });
+            });
+        </script>";
+    }
+}
+?>
+
+<header>
             <div class="hi">
-         
                 <a href="" class="logo"><img src="images/logo1.png" alt="logo" style="width: 120px;"></a>
                 <h1>Norwood International</h1>
             </div>
 
 
-   
             <ul>
-                <li><a href="admin-index.html">Home</a></li>
+                <li><a href="admin-index.php">Home</a></li>
                 <li><a href="admin-product.php">Products</a></li>
                 <li><a href="supplier.php">Suppliers</a></li>
                 <li><a href="employee.php">Employees</a></li>
                 <li><a href="admin_order.php">Orders</a></li>
+                <li><a href="admin-feedback.php">Feedback</a></li>
                 <li><a href="admin-dashboard.php">Dashboard</a></li>
             </ul>
         </header>
 
         
         <h2 class="topic">Order Details</h2>
-        <p class="info">In the delivery details section, you can review and manage all orders with their details. You can view and edit many information 
+        <!-- <p class="info">In the delivery details section, you can review and manage all orders with their details. You can view and edit many information 
         such as IDs of all orders, ordered products, order date, price and order status.Access to this area is limited. Only administrater and team leaders can reach. 
-        The changes you make will be approved after they are checked. </p>
+        The changes you make will be approved after they are checked. </p> -->
 
     <div class="container">
-        <h1>Admin Order Management</h1>
+        <h1></h1>
         <table>
             <thead>
                 <tr>
@@ -304,7 +365,7 @@ footer .social a{
                     <th>Delivery Location</th>
                     <th>Total Amount</th>
                     <th>Products</th>
-                    <th>Quantity</th>
+                    <th>Quantity (In Grams)</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -334,7 +395,7 @@ footer .social a{
                             <?php
                             mysqli_data_seek($productResult, 0);
                             while ($product = mysqli_fetch_assoc($productResult)) {
-                                echo $product['quantity'] . '<br>';
+                                echo $product['quantity'] . 'g<br>';
                             }
                             ?>
                         </td>
