@@ -410,58 +410,30 @@ if (isset($_POST['delete_order'])) {
     </div>
 
 
-<footer>
-    <div>
-        <h3>Connect with Us</h3>
+    <main>
+    <!-- Your page content goes here -->
+</main>
+
+<footer style="background-color: #f5f5dc; color: #017143; padding: 20px 0; text-align: center; font-family: Arial, sans-serif;">
+    <div style="margin-bottom: 10px;">
+        <h3 style="margin-bottom: 15px;">Connect with Us</h3>
     </div>
-    <div>
-        <a href="https://web.whatsapp.com/" style="color: #25D366;">
+    <div style="font-size: 24px;">
+        <a href="https://wa.me/94716195982" style="margin: 0 15px; color: #25D366; text-decoration: none;">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
-        <a href="https://www.facebook.com/norwoodteasinternational/" style="color: #4267B2;">
+        <a href="https://www.facebook.com/norwoodteasinternational/" style="margin: 0 15px; color: #4267B2; text-decoration: none;">
             <i class="fa-brands fa-facebook"></i>
         </a>
-        <a href="mailto:someone@example.com" style="color: #D44638;">
-            <i class="fa-solid fa-envelope"></i>
-        </a>
+        <a href="mailto:norwoodlankateasinternational@gmail.com">
+  <i class="fa-solid fa-envelope" style="margin: 0 15px; color: #DA3902;"></i>
+</a>
+
     </div>
-    <div>
+    <div style="margin-top: 15px; font-size: 14px;">
         <p>&copy; 2024 Your Company. All rights reserved.</p>
     </div>
-</footer>
-<style>
-        /* General styling */
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensure the body takes up the full height of the viewport */
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        main {
-            flex: 1; /* Allow the main content to grow and push the footer down */
-            padding: 20px;
-        }
-
-        footer {
-            background-color: #f5f5dc;
-            color: #017143;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        footer h3 {
-            margin-bottom: 15px;
-        }
-
-        footer a {
-            margin: 0 15px;
-            color: inherit;
-            text-decoration: none;
-            font-size: 24px;
-        }
-
+    <style>
         footer a:hover {
             color: #ffffff;
         }
@@ -473,11 +445,30 @@ if (isset($_POST['delete_order'])) {
         footer a:hover i {
             transform: scale(1.2);
         }
-
-        footer p {
-            margin-top: 15px;
-            font-size: 14px;
+  
+     
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #f5f5dc;
+             color: #017143;
+      
+            padding: 20px 0;
+            text-align: center;
+        }
+
+      
     </style>
+</footer>
 </body>
 </html>

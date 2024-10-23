@@ -49,7 +49,7 @@ button[name="deleteFeedback"]:hover {
     background-color: #ff4d4d; /* Light red on hover */
     color: white; /* White text on hover */
 }
-h3 {
+.redh3 {
     text-align: center; /* Center-align the text */
     color: red; /* Red text color */
 }
@@ -165,7 +165,7 @@ if (isset($_POST['deleteAllFeedback'])) {
         <?php } ?>
     <?php } 
  else { ?>
-    <h3>No feedback available.</h3>
+    <h3 class="redh3">No feedback available.</h3>
 <?php } ?>
 
 
@@ -180,20 +180,25 @@ if (isset($_POST['deleteAllFeedback'])) {
     </div>
 
 </section>
+<main>
+    <!-- Your page content goes here -->
+</main>
+
 <footer style="background-color: #f5f5dc; color: #017143; padding: 20px 0; text-align: center; font-family: Arial, sans-serif;">
     <div style="margin-bottom: 10px;">
         <h3 style="margin-bottom: 15px;">Connect with Us</h3>
     </div>
     <div style="font-size: 24px;">
-        <a href="https://web.whatsapp.com/" style="margin: 0 15px; color: #25D366; text-decoration: none;">
+        <a href="https://wa.me/94716195982" style="margin: 0 15px; color: #25D366; text-decoration: none;">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
         <a href="https://www.facebook.com/norwoodteasinternational/" style="margin: 0 15px; color: #4267B2; text-decoration: none;">
             <i class="fa-brands fa-facebook"></i>
         </a>
-        <a href="mailto:someone@example.com" style="margin: 0 15px; color: #D44638; text-decoration: none;">
-            <i class="fa-solid fa-envelope"></i>
-        </a>
+        <a href="mailto:norwoodlankateasinternational@gmail.com">
+  <i class="fa-solid fa-envelope" style="margin: 0 15px; color: #DA3902;"></i>
+</a>
+
     </div>
     <div style="margin-top: 15px; font-size: 14px;">
         <p>&copy; 2024 Your Company. All rights reserved.</p>
@@ -210,6 +215,30 @@ if (isset($_POST['deleteAllFeedback'])) {
         footer a:hover i {
             transform: scale(1.2);
         }
+  
+     
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #f5f5dc;
+             color: #017143;
+      
+            padding: 20px 0;
+            text-align: center;
+        }
+
+      
     </style>
+</footer>
 </body>
 </html>

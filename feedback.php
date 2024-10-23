@@ -281,15 +281,16 @@ $userFeedbackQuery->close();
         <h3 style="margin-bottom: 15px;">Connect with Us</h3>
     </div>
     <div style="font-size: 24px;">
-        <a href="https://web.whatsapp.com/" style="margin: 0 15px; color: #25D366; text-decoration: none;">
+        <a href="https://wa.me/94716195982" style="margin: 0 15px; color: #25D366; text-decoration: none;">
             <i class="fa-brands fa-whatsapp"></i>
         </a>
-        <a href="https://web.facebook.com/?_rdc=1&_rdr" style="margin: 0 15px; color: #4267B2; text-decoration: none;">
+        <a href="https://www.facebook.com/norwoodteasinternational/" style="margin: 0 15px; color: #4267B2; text-decoration: none;">
             <i class="fa-brands fa-facebook"></i>
         </a>
-        <a href="mailto:someone@example.com" style="margin: 0 15px; color: #D44638; text-decoration: none;">
-            <i class="fa-solid fa-envelope"></i>
-        </a>
+        <a href="mailto:norwoodlankateasinternational@gmail.com">
+  <i class="fa-solid fa-envelope" style="margin: 0 15px; color: #DA3902;"></i>
+</a>
+
     </div>
     <div style="margin-top: 15px; font-size: 14px;">
         <p>&copy; 2024 Your Company. All rights reserved.</p>

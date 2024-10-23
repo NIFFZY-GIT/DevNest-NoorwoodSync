@@ -481,7 +481,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     </div>
 </div>
 
+  
+</head>
+<body>
+
+<main>
+    <!-- Your page content goes here -->
+</main>
+
+<footer style="background-color: #f5f5dc; color: #017143; padding: 20px 0; text-align: center; font-family: Arial, sans-serif;">
+    <div style="margin-bottom: 10px;">
+        <h3 style="margin-bottom: 15px;">Connect with Us</h3>
+    </div>
+    <div style="font-size: 24px;">
+        <a href="https://wa.me/94716195982" style="margin: 0 15px; color: #25D366; text-decoration: none;">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://www.facebook.com/norwoodteasinternational/" style="margin: 0 15px; color: #4267B2; text-decoration: none;">
+            <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="mailto:norwoodlankateasinternational@gmail.com">
+  <i class="fa-solid fa-envelope" style="margin: 0 15px; color: #DA3902;"></i>
+</a>
+
+    </div>
+    <div style="margin-top: 15px; font-size: 14px;">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </div>
     <style>
+        footer a:hover {
+            color: #ffffff;
+        }
+
+        footer i {
+            transition: transform 0.3s ease;
+        }
+
+        footer a:hover i {
+            transform: scale(1.2);
+        }
+  
+     
         body {
             display: flex;
             flex-direction: column;
@@ -502,59 +542,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             text-align: center;
         }
 
-        footer h3 {
-            margin-bottom: 15px;
-        }
-
-        footer a {
-            margin: 0 15px;
-            color: inherit;
-            text-decoration: none;
-            font-size: 24px;
-        }
-
-        footer a:hover {
-            color: #ffffff;
-        }
-
-        footer i {
-            transition: transform 0.3s ease;
-        }
-
-        footer a:hover i {
-            transform: scale(1.2);
-        }
-
-        footer p {
-            margin-top: 15px;
-            font-size: 14px;
-        }
+      
     </style>
-</head>
-<body>
-
-<main>
-    <!-- Your page content goes here -->
-</main>
-
-<footer>
-    <div>
-        <h3>Connect with Us</h3>
-    </div>
-    <div>
-        <a href="https://web.whatsapp.com/" style="color: #25D366;">
-            <i class="fa-brands fa-whatsapp"></i>
-        </a>
-        <a href="https://www.facebook.com/norwoodteasinternational/" style="color: #4267B2;">
-            <i class="fa-brands fa-facebook"></i>
-        </a>
-        <a href="mailto:someone@example.com" style="color: #D44638;">
-            <i class="fa-solid fa-envelope"></i>
-        </a>
-    </div>
-    <div>
-        <p>&copy; 2024 Your Company. All rights reserved.</p>
-    </div>
 </footer>
 
 </body>
