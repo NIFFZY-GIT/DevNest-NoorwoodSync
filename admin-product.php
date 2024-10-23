@@ -326,17 +326,38 @@ $select = mysqli_query($conn, "SELECT * FROM tbl_product");
 </div> -->
 
 
-<footer class="footer">
-            <div class="social">
-                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
-                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
-                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
-            </div>
-            <p align="center"> © Copyright Norwood.lk 2023. All rights reserved</p>
-            <p align="center"> Established in 2022</p>
-            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
-            <br>
-        </footer>
+<footer style="background-color: #f5f5dc; color: #017143; padding: 20px 0; text-align: center; font-family: Arial, sans-serif;">
+    <div style="margin-bottom: 10px;">
+        <h3 style="margin-bottom: 15px;">Connect with Us</h3>
+    </div>
+    <div style="font-size: 24px;">
+        <a href="https://web.whatsapp.com/" style="margin: 0 15px; color: #25D366; text-decoration: none;">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://www.facebook.com/norwoodteasinternational/" style="margin: 0 15px; color: #4267B2; text-decoration: none;">
+            <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="mailto:someone@example.com" style="margin: 0 15px; color: #D44638; text-decoration: none;">
+            <i class="fa-solid fa-envelope"></i>
+        </a>
+    </div>
+    <div style="margin-top: 15px; font-size: 14px;">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </div>
+    <style>
+        footer a:hover {
+            color: #ffffff;
+        }
+
+        footer i {
+            transition: transform 0.3s ease;
+        }
+
+        footer a:hover i {
+            transform: scale(1.2);
+        }
+    </style>
+</footer>
 <script>
 
     

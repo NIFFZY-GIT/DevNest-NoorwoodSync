@@ -481,17 +481,84 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     </div>
 </div>
 
-<footer class="footer">
-            <div class="social">
-                <a href="https://web.whatsapp.com/"><i class="fa-brands fa-whatsapp" style="color: #000000;"></i></a>
-                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-brands fa-facebook" style="color: #000000;"></i></a>
-                <a href="https://web.facebook.com/?_rdc=1&_rdr"><i class="fa-solid fa-envelope" style="color: #000000;"></i></a>                    
-            </div>
-            <p align="center"> © Copyright Norwood.lk 2023. All rights reserved</p>
-            <p align="center"> Established in 2022</p>
-            <p align="center"> Privacy Policy | Terms of Service | Contact Us</p>
-            <br>
-        </footer>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #f5f5dc;
+             color: #017143;
+      
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        footer h3 {
+            margin-bottom: 15px;
+        }
+
+        footer a {
+            margin: 0 15px;
+            color: inherit;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        footer a:hover {
+            color: #ffffff;
+        }
+
+        footer i {
+            transition: transform 0.3s ease;
+        }
+
+        footer a:hover i {
+            transform: scale(1.2);
+        }
+
+        footer p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <!-- Your page content goes here -->
+</main>
+
+<footer>
+    <div>
+        <h3>Connect with Us</h3>
+    </div>
+    <div>
+        <a href="https://web.whatsapp.com/" style="color: #25D366;">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://www.facebook.com/norwoodteasinternational/" style="color: #4267B2;">
+            <i class="fa-brands fa-facebook"></i>
+        </a>
+        <a href="mailto:someone@example.com" style="color: #D44638;">
+            <i class="fa-solid fa-envelope"></i>
+        </a>
+    </div>
+    <div>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>
 
 <script>
 document.querySelectorAll('form[action="remove_from_cart.php"]').forEach(form => {
