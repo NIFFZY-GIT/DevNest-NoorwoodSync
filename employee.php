@@ -533,13 +533,7 @@ if (isset($_POST['searchEmployee'])) {
         }
   
      
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
+ 
 
         main {
             flex: 1;

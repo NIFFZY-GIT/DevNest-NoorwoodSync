@@ -19,6 +19,18 @@ if (session_status() == PHP_SESSION_NONE) {
     <script src="https://smtpjs.com/v3/smtp.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+window.embeddedChatbotConfig = {
+chatbotId: "xYab3amLnm91LwMETAtb3",
+domain: "www.chatbase.co"
+}
+</script>
+<script
+src="https://www.chatbase.co/embed.min.js"
+chatbotId="xYab3amLnm91LwMETAtb3"
+domain="www.chatbase.co"
+defer>
+</script>
     <style>
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
@@ -347,6 +359,7 @@ img .logo{
         .contact-button:hover {
             background-color: #2E8B57;
             transform: translateY(-3px);
+            cursor: pointer;
         }
 
         .contact-info {
@@ -455,7 +468,7 @@ form button {
 }
 
 form button:hover {
-    background-color: #01834d;
+    background-color: #32a852;
 }
 
         .contact{
@@ -488,6 +501,9 @@ form button:hover {
 }
 
 .dropdown .dropbtn {
+    cursor: pointer;
+}
+btn{
     cursor: pointer;
 }
 

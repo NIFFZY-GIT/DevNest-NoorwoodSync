@@ -11,6 +11,18 @@ include 'config.php';
     <title>Customer Delivery Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+window.embeddedChatbotConfig = {
+chatbotId: "xYab3amLnm91LwMETAtb3",
+domain: "www.chatbase.co"
+}
+</script>
+<script
+src="https://www.chatbase.co/embed.min.js"
+chatbotId="xYab3amLnm91LwMETAtb3"
+domain="www.chatbase.co"
+defer>
+</script>
     <style>
 @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
@@ -260,7 +272,7 @@ $cartResult = mysqli_query($conn, "SELECT c.*, p.name, p.price FROM tbl_cart c J
 $totalAmount = 0;
 
 while ($cart = mysqli_fetch_assoc($cartResult)) {
-    $totalAmount += $cart['totalPrice'] / 100;
+    $totalAmount += $cart['totalPrice'];
 }
 $formattedTotalAmount = number_format($totalAmount, 2, '.', ''); // Ensure it's a float with 2 decimal points
 
@@ -354,7 +366,7 @@ if (isset($_POST['checkout'])) {
         <?php
         mysqli_data_seek($cartResult, 0);
         while ($cart = mysqli_fetch_assoc($cartResult)): 
-            $pricePerGram = $cart['price'] / 100; // Calculate price per gram
+            $pricePerGram = $cart['price']; // Calculate price per gram
             $productTotal = $pricePerGram * $cart['quantity']; // Calculate total price based on actual quantity
         ?>
         <tr>
